@@ -1,10 +1,10 @@
 # Advent of Code 2021
 
-## Merry Christmas fellow Rustaceans
+## 🎄 Merry Christmas fellow Rustacean 🎄
 
-It's that time of year again, Santa is in trouble and needs our help to save Christmas. For such an
+It's that time of year again, Santa 🎅 is in trouble and the elves needs our help to save Christmas. For such an
 important task we need the utmost in reliability and performance so I will be using Rust to do my
-part.
+part. So get ready to `.unwrap()` those 🎁, and save Christmas (or `panic!()`).
 
 ## Structure
 
