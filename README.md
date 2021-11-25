@@ -4,7 +4,7 @@
 
 It's that time of year again, Santa 🎅 is in trouble and the elves needs our help to save Christmas. For such an
 important task we need the utmost in reliability and performance so I will be using Rust to do my
-part. So get ready to `.unwrap()` those 🎁, and save Christmas (or `panic!()`).
+part. So get ready to `.unwrap()` those 🎁 to save Christmas and don't `panic!()`.
 
 ## Structure
 
