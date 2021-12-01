@@ -1,4 +1,4 @@
-name: Rust
+name: Day1
 
 on:
   push:
@@ -19,13 +19,3 @@ jobs:
       run: cargo check -p day1
     - name: Run tests
       run: cargo test -p day1
-
-  day2:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Check
-      run: cargo check -p day2
-    - name: Run tests
-      run: cargo test -p day2

@@ -2,7 +2,7 @@
 
 [![Day1](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day1.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day1.yml)
 
-[![Day1](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml)
+[![Day2](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml)
 
 ## 🎄 Merry Christmas fellow Rustacean 🎄
 

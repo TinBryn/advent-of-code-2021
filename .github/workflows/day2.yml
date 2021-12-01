@@ -1,4 +1,4 @@
-name: Rust
+name: Day2
 
 on:
   push:
