@@ -22,6 +22,7 @@ mod test {
     use crate::{solve_problem1, solve_problem2};
 
     #[test]
+    #[ignore = "day not available"]
     fn problem1() {
         let input = "";
         let expected = 0;
@@ -30,6 +31,7 @@ mod test {
     }
 
     #[test]
+    #[ignore = "day not available"]
     fn problem2() {
         let input = "";
         let expected = 0;
