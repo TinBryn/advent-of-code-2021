@@ -1,6 +1,8 @@
 # Advent of Code 2021
 
-![Rust](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/rust.yml/badge.svg)
+[![Day1](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day1.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day1.yml)
+
+[![Day1](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml)
 
 ## 🎄 Merry Christmas fellow Rustacean 🎄
 
