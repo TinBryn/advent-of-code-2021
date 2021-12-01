@@ -1,5 +1,7 @@
 # Advent of Code 2021
 
+![Rust](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/rust.yml/badge.svg)
+
 ## 🎄 Merry Christmas fellow Rustacean 🎄
 
 It's that time of year again, Santa 🎅 is in trouble and the elves needs our help to save Christmas. For such an
