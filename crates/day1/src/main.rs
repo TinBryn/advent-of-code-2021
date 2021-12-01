@@ -15,3 +15,24 @@ fn solve_problem1(input: &str) -> i32 {
 fn solve_problem2(input: &str) -> i32 {
     todo!()
 }
+
+#[cfg(test)]
+mod test {
+    use crate::{solve_problem1, solve_problem2};
+
+    #[test]
+    fn problem1() {
+        let input = "";
+        let expected = 0;
+        let actual = solve_problem1(input);
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn problem2() {
+        let input = "";
+        let expected = 0;
+        let actual = solve_problem2(input);
+        assert_eq!(expected, actual);
+    }
+}
