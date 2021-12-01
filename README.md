@@ -10,4 +10,7 @@ part. So get ready to `.unwrap()` those 🎁 to save Christmas and don't `panic!
 
 This is setup as a Cargo workspace with one crate for each day's problem, plus any additional
 common requirements that arise (such as 2019's intcode computer). Each crate will be a binary and
-can be executed simply via `cargo run`
+can all be executed simply via `cargo run` or a specific day via `cargo run -p day*`.
+
+There are some tests that I will be writing based on examples given in the descriptions, these can
+also be run as above using `cargo test` instead of `cargo run`.
