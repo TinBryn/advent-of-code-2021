@@ -27,6 +27,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Touch input
+      run: touch crates/day2/src/input.txt
     - name: Check
       run: cargo check -p day2
     - name: Run tests
