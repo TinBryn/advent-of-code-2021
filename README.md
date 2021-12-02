@@ -1,8 +1,6 @@
 # Advent of Code 2021
 
-[![Day1](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day1.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day1.yml)
-
-[![Day2](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml)
+[![Previous Days](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/previous_days.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/previous_days.yml)
 
 [![Day3](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day3.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day3.yml)
 
