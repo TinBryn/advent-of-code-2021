@@ -1,28 +1,38 @@
+use input::{Input, Line};
+
 const INPUT: &str = include_str!("input.txt");
 
-#[allow(unused_imports)]
-use itertools::Itertools;
 
 fn main() {
-    // println!("input: {:?}", INPUT);
-    let input = Input::parse_input(INPUT);
+    let input = Input::from_str(INPUT);
     println!("problem1: {}", solve_problem1(&input));
     println!("problem2: {}", solve_problem2(&input));
 }
 
-struct Input<'a> {
-    input: Vec<(&'a str, i32)>,
-}
+mod input {
+    #[derive(Debug)]
+    pub struct Line(pub String, pub i32);
 
-impl<'a> Input<'a> {
-    fn parse_input(input: &'a str) -> Self {
-        Input {
-            input: input
-                .lines()
-                .map(|line| line.split_ascii_whitespace())
-                .map(|mut it| (it.next().unwrap(), it.next().unwrap()))
-                .map(|(dir, n)| (dir, n.parse().unwrap()))
-                .collect(),
+    impl Line {
+        pub fn from_str(s: &str) -> Self {
+            let mut parts = s.split_ascii_whitespace();
+            let s = parts.next().unwrap().into();
+            let n = parts.next().unwrap().parse().unwrap();
+
+            Self(s, n)
+        }
+    }
+
+    #[derive(Debug)]
+    pub struct Input {
+        pub inner: Vec<Line>,
+    }
+
+    impl Input {
+        pub fn from_str(s: &str) -> Self {
+            Self {
+                inner: s.lines().map(Line::from_str).collect(),
+            }
         }
     }
 }
@@ -30,8 +40,8 @@ impl<'a> Input<'a> {
 fn solve_problem1(input: &Input) -> i32 {
     let mut depth = 0;
     let mut position = 0;
-    for &(dir, amount) in &input.input {
-        match dir {
+    for Line(dir, amount) in &input.inner {
+        match dir.as_str() {
             "forward" => position += amount,
             "down" => depth += amount,
             "up" => depth -= amount,
@@ -45,8 +55,8 @@ fn solve_problem2(input: &Input) -> i32 {
     let mut depth = 0;
     let mut position = 0;
     let mut aim = 0;
-    for &(dir, amount) in &input.input {
-        match dir {
+    for Line(dir, amount) in &input.inner {
+        match dir.as_str() {
             "forward" => {
                 position += amount;
                 depth += aim * amount;
@@ -61,14 +71,14 @@ fn solve_problem2(input: &Input) -> i32 {
 
 #[cfg(test)]
 mod test {
-    use crate::{solve_problem1, solve_problem2, Input};
+    use crate::{input, solve_problem1, solve_problem2};
 
     const INPUT: &str = "forward 5\ndown 5\nforward 8\nup 3\ndown 8\nforward 2";
 
     #[test]
     fn problem1() {
         let expected = 150;
-        let actual = solve_problem1(&Input::parse_input(INPUT));
+        let actual = solve_problem1(&input::Input::from_str(INPUT));
         assert_eq!(expected, actual);
     }
 
@@ -76,7 +86,7 @@ mod test {
     // #[ignore = "day not available"]
     fn problem2() {
         let expected = 900;
-        let actual = solve_problem2(&Input::parse_input(INPUT));
+        let actual = solve_problem2(&input::Input::from_str(INPUT));
         assert_eq!(expected, actual);
     }
 }
