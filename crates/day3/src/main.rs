@@ -1,10 +1,8 @@
 const INPUT: &str = include_str!("input.txt");
-#[allow(unused_imports)]
-use itertools::Itertools;
 
 fn main() {
-    // println!("input: {:?}", INPUT);
-    println!("problem1: {}", solve_problem1(INPUT));
+    println!("input: {:?}", INPUT);
+    // println!("problem1: {}", solve_problem1(INPUT));
     // println!("problem2: {}", solve_problem2(INPUT));
 }
 
@@ -18,12 +16,13 @@ fn solve_problem2(input: &str) -> i32 {
     todo!()
 }
 
+
 #[cfg(test)]
 mod test {
     use crate::{solve_problem1, solve_problem2};
 
     #[test]
-    // #[ignore = "day not available"]
+    #[ignore = "day not available"]
     fn problem1() {
         let input = "";
         let expected = 0;
@@ -32,7 +31,7 @@ mod test {
     }
 
     #[test]
-    // #[ignore = "day not available"]
+    #[ignore = "day not available"]
     fn problem2() {
         let input = "";
         let expected = 0;
