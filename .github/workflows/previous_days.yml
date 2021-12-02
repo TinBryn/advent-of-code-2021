@@ -16,8 +16,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Check
+      run: touch crates/day1/src/input.txt
       run: cargo check -p day1
     - name: Run tests
+      run: touch crates/day1/src/input.txt
       run: cargo test -p day1
   
   day2:
