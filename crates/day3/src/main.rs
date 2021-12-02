@@ -49,7 +49,6 @@ mod test {
     use crate::{input::Input, solve_problem1, solve_problem2};
 
     #[test]
-    #[ignore = "day not available"]
     fn problem1() {
         let input = "";
         let input = Input::from_str(input);
@@ -59,7 +58,6 @@ mod test {
     }
 
     #[test]
-    #[ignore = "day not available"]
     fn problem2() {
         let input = "";
         let input = Input::from_str(input);
