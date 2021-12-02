@@ -5,8 +5,8 @@ const INPUT: &str = include_str!("input.txt");
 fn main() {
     let input = Input::from_str(INPUT);
     println!("input: {:?}", input);
-    // println!("problem1: {}", solve_problem1(input));
-    // println!("problem2: {}", solve_problem2(input));
+    println!("problem1: {}", solve_problem1(&input));
+    println!("problem2: {}", solve_problem2(&input));
 }
 
 #[allow(unused)]
@@ -36,12 +36,12 @@ mod input {
 
 #[allow(unused)]
 fn solve_problem1(input: &Input) -> i32 {
-    todo!()
+    0
 }
 
 #[allow(unused)]
 fn solve_problem2(input: &Input) -> i32 {
-    todo!()
+    0
 }
 
 #[cfg(test)]
