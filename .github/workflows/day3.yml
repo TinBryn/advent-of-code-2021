@@ -16,6 +16,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Check
-      run: cargo check -p day2
+      run: cargo check -p day3
     - name: Run tests
-      run: cargo test -p day2
+      run: cargo test -p day3

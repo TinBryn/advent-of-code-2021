@@ -4,6 +4,8 @@
 
 [![Day2](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day2.yml)
 
+[![Day3](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day3.yml/badge.svg)](https://github.com/TinBryn/advent-of-code-2021/actions/workflows/day3.yml)
+
 ## 🎄 Merry Christmas fellow Rustacean 🎄
 
 It's that time of year again, Santa 🎅 is in trouble and the elves needs our help to save Christmas. For such an
