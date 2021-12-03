@@ -2,7 +2,6 @@ use input::{Input, Line};
 
 const INPUT: &str = include_str!("input.txt");
 
-
 fn main() {
     let input = Input::from_str(INPUT);
     println!("problem1: {}", solve_problem1(&input));
@@ -48,6 +47,7 @@ fn solve_problem1(input: &Input) -> i32 {
             _ => println!("unknown command {}", dir),
         }
     }
+    dbg!((depth, position));
     depth * position
 }
 
@@ -66,6 +66,7 @@ fn solve_problem2(input: &Input) -> i32 {
             _ => println!("unknown command {}", dir),
         }
     }
+    dbg!((depth, position));
     depth * position
 }
 
