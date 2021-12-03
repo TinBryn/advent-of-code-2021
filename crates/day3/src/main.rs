@@ -9,14 +9,13 @@ fn main() {
     println!("problem2: {}", solve_problem2(&input));
 }
 
-#[allow(unused)]
 mod input {
     #[derive(Debug)]
     pub struct Line {}
 
     impl Line {
         pub fn from_str(s: &str) -> Self {
-            Self {}
+            todo!("{}", s)
         }
     }
 
@@ -34,14 +33,12 @@ mod input {
     }
 }
 
-#[allow(unused)]
 fn solve_problem1(input: &Input) -> i32 {
-    0
+    todo!("{:?}", input)
 }
 
-#[allow(unused)]
 fn solve_problem2(input: &Input) -> i32 {
-    0
+    todo!("{:?}", input)
 }
 
 #[cfg(test)]
