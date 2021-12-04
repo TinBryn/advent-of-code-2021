@@ -235,7 +235,7 @@ mod test {
     #[test]
     fn problem2() {
         let input = input::Input::from_str(TEST);
-        let expected = 220;
+        let expected = 230;
         let actual = solve_problem2(&input.inner);
         assert_eq!(expected, actual);
     }
