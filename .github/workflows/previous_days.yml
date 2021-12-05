@@ -33,4 +33,4 @@ jobs:
     - name: Check
       run: cargo check --workspace --exclude day6
     - name: Run tests
-      run: cargo test -- --skip -p day6
+      run: cargo test --workspace --exclude day6
