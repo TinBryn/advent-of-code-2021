@@ -10,7 +10,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  day1:
+  previous:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,48 +27,6 @@ jobs:
     - name: Touch input
       run: touch crates/day1/src/input.txt
     - name: Check
-      run: cargo check -p day1
+      run: cargo check --workspace --exclude day6
     - name: Run tests
-      run: cargo test -p day1
-  
-  day2:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cargo/bin/
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-          target/
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-    - name: Touch input
-      run: touch crates/day2/src/input.txt
-    - name: Check
-      run: cargo check -p day2
-    - name: Run tests
-      run: cargo test -p day2
-
-  day3:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cargo/bin/
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-          target/
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-    - name: Touch input
-      run: touch crates/day3/src/input.txt
-    - name: Check
-      run: cargo check -p day3
-    - name: Run tests
-      run: cargo test -p day3
+      run: cargo test -- --skip -p day6

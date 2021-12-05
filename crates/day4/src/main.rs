@@ -22,7 +22,6 @@ fn print_input(input: &Input) {
     }
 }
 
-#[allow(unused)]
 mod input {
     #[derive(Debug, Clone)]
     pub struct Board {
@@ -68,18 +67,11 @@ mod input {
         }
 
         pub fn problem1(&self) -> usize {
-            let mut state = self
-                .boards
-                .iter()
-                .cloned()
-                .map(BoardState::new)
-                .collect::<Vec<_>>();
+            let mut state = BoardState::clone_with_state(&self.boards);
 
             for number in &self.inputs {
                 for board in state.iter_mut() {
                     if let Some(res) = board.call(*number) {
-                        println!("number: {}", number);
-                        println!("board: {:#?}", board);
                         return res;
                     }
                 }
@@ -88,12 +80,7 @@ mod input {
         }
 
         pub fn problem2(&self) -> usize {
-            let mut state = self
-                .boards
-                .iter()
-                .cloned()
-                .map(BoardState::new)
-                .collect::<Vec<_>>();
+            let mut state = BoardState::clone_with_state(&self.boards);
 
             let mut won = vec![false; state.len()];
             let mut order = 0;
@@ -102,10 +89,9 @@ mod input {
                 for (i, board) in state.iter_mut().enumerate() {
                     if !won[i] {
                         if let Some(res) = board.call(number) {
-                            println!("board {} won, score: {}", i, res);
                             won[i] = true;
                             order += 1;
-                            if order  == self.boards.len() {
+                            if order == self.boards.len() {
                                 return res;
                             }
                         }
@@ -136,6 +122,14 @@ mod input {
         fn new(board: Board) -> Self {
             let called = vec![false; board.numbers.len()];
             Self { called, board }
+        }
+
+        fn clone_with_state(boards: &[Board]) -> Vec<Self> {
+            boards
+                .iter()
+                .cloned()
+                .map(BoardState::new)
+                .collect()
         }
 
         fn call(&mut self, number: usize) -> Option<usize> {

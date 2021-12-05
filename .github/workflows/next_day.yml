@@ -1,4 +1,4 @@
-name: Day4
+name: Next Day
 
 on:
   push:
@@ -25,8 +25,8 @@ jobs:
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     - name: Touch input
-      run: touch crates/day4/src/input.txt
+      run: touch crates/day6/src/input.txt
     - name: Check
-      run: cargo check -p day4
+      run: cargo check -p day6
     - name: Run tests
-      run: cargo test -p day4
+      run: cargo test -p day6
