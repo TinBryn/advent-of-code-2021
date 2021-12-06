@@ -10,9 +10,11 @@ fn main() {
     println!("problem2: {}", input.problem2());
 }
 
-#[allow(unused)]
 mod input {
-    use std::fmt::{Debug, Display};
+    use std::{
+        fmt::{Debug, Display},
+        ops::{Index, IndexMut},
+    };
 
     #[derive(Debug, Clone, Copy)]
     pub struct Line {
@@ -45,6 +47,48 @@ mod input {
         pub fn is_aligned(&self) -> bool {
             self.x1 == self.x2 || self.y1 == self.y2
         }
+
+        fn diagonal_up_left(&self, grid: &mut Grid) {
+            for (x, y) in (self.x2..=self.x1).zip(self.y2..=self.y1) {
+                grid[(x, y)] += 1;
+            }
+        }
+
+        fn diagonal_up_right(&self, grid: &mut Grid) {
+            for (x, y) in (self.x1..=self.x2).zip((self.y2..=self.y1).rev()) {
+                grid[(x, y)] += 1;
+            }
+        }
+
+        fn diagonal_down_left(&self, grid: &mut Grid) {
+            for (x, y) in (self.x2..=self.x1).zip((self.y1..=self.y2).rev()) {
+                grid[(x, y)] += 1;
+            }
+        }
+
+        fn diagonal_down_right(&self, grid: &mut Grid) {
+            for (x, y) in (self.x1..=self.x2).zip(self.y1..=self.y2) {
+                grid[(x, y)] += 1;
+            }
+        }
+
+        fn vertical(&self, grid: &mut Grid) {
+            let y = self.y1;
+            let lower = self.x1.min(self.x2);
+            let upper = self.x1.max(self.x2);
+            for x in lower..=upper {
+                grid[(x, y)] += 1;
+            }
+        }
+
+        fn horizontal(&self, grid: &mut Grid) {
+            let x = self.x1;
+            let lower = self.y1.min(self.y2);
+            let upper = self.y1.max(self.y2);
+            for y in lower..=upper {
+                grid[(x, y)] += 1;
+            }
+        }
     }
 
     #[derive(Debug, Clone)]
@@ -56,6 +100,20 @@ mod input {
     pub struct Grid {
         points: Vec<usize>,
         width: usize,
+    }
+
+    impl Index<(usize, usize)> for Grid {
+        type Output = usize;
+
+        fn index(&self, (x, y): (usize, usize)) -> &Self::Output {
+            &self.points[y * self.width + x]
+        }
+    }
+
+    impl IndexMut<(usize, usize)> for Grid {
+        fn index_mut(&mut self, (x, y): (usize, usize)) -> &mut Self::Output {
+            &mut self.points[y * self.width + x]
+        }
     }
 
     impl Debug for Grid {
@@ -105,88 +163,42 @@ mod input {
 
         pub fn problem1(&self) -> usize {
             let (maxx, maxy) = self.get_max_values();
-            let mut grid = vec![0usize; (maxx + 1) * (maxy + 1)];
-            for line in self.lines.iter().filter(|line| line.is_aligned()) {
-                // println!("{}", line);
-                if line.x1 == line.x2 {
-                    let x = line.x1;
-                    let lower = line.y1.min(line.y2);
-                    let upper = line.y1.max(line.y2);
-                    for y in lower..=upper {
-                        grid[y * (maxx + 1) + x] += 1;
-                    }
-                } else {
-                    let y = line.y1;
-                    let lower = line.x1.min(line.x2);
-                    let upper = line.x1.max(line.x2);
-                    for x in lower..=upper {
-                        grid[y * (maxx + 1) + x] += 1;
-                    }
-                }
-            }
-            let grid = Grid {
-                points: grid,
+            let mut grid = Grid {
+                points: vec![0usize; (maxx + 1) * (maxy + 1)],
                 width: maxx + 1,
             };
-            // println!("{:?}", grid);
+            for line in self.lines.iter().filter(|line| line.is_aligned()) {
+                draw_line_to_grid(line, &mut grid)
+            }
             grid.points.iter().filter(|i| **i > 1).count()
         }
 
         pub fn problem2(&self) -> usize {
             let (maxx, maxy) = self.get_max_values();
-            let mut grid = vec![0usize; (maxx + 1) * (maxy + 1)];
-            for line in self.lines.iter() {
-                // println!("{}", line);
-                if line.x1 == line.x2 {
-                    horizontal(line, &mut grid, maxx);
-                } else if line.y1 == line.y2 {
-                    vertical(line, &mut grid, maxx);
-                } else if line.x1 < line.x2 && line.y1 < line.y2 {
-                    // println!("(1, 1) -> (2, 2) {}", line);
-                    for (x, y) in (line.x1..=line.x2).zip(line.y1..=line.y2) {
-                        grid[y * (maxx + 1) + x] += 1;
-                    }
-                } else if line.x2 < line.x1 && line.y1 < line.y2 {
-                    // println!("(2, 1) -> (1, 2) {}", line);
-                    for (x, y) in (line.x2..=line.x1).zip((line.y1..=line.y2).rev()) {
-                        grid[y * (maxx + 1) + x] += 1;
-                    }
-                }else if line.x1 < line.x2 && line.y2 < line.y1 {
-                    // println!("(1, 2) -> (2, 1) {}", line);
-                    for (x, y) in (line.x1..=line.x2).zip((line.y2..=line.y1).rev()) {
-                        grid[y * (maxx + 1) + x] += 1;
-                    }
-                } else if line.x2 < line.x1 && line.y2 < line.y1 {
-                    // println!("(2, 2) -> (1, 1) {}", line);
-                    for (x, y) in (line.x2..=line.x1).zip(line.y2..=line.y1) {
-                        grid[y * (maxx + 1) + x] += 1;
-                    }
-                }
-            }
-            let grid = Grid {
-                points: grid,
+            let mut grid = Grid {
+                points: vec![0usize; (maxx + 1) * (maxy + 1)],
                 width: maxx + 1,
             };
-            // println!("{:?}", grid);
+            for line in self.lines.iter() {
+                draw_line_to_grid(line, &mut grid);
+            }
             grid.points.iter().filter(|i| **i > 1).count()
         }
     }
 
-    fn vertical(line: &Line, grid: &mut Vec<usize>, maxx: usize) {
-        let y = line.y1;
-        let lower = line.x1.min(line.x2);
-        let upper = line.x1.max(line.x2);
-        for x in lower..=upper {
-            grid[y * (maxx + 1) + x] += 1;
-        }
-    }
-
-    fn horizontal(line: &Line, grid: &mut Vec<usize>, maxx: usize) {
-        let x = line.x1;
-        let lower = line.y1.min(line.y2);
-        let upper = line.y1.max(line.y2);
-        for y in lower..=upper {
-            grid[y * (maxx + 1) + x] += 1;
+    fn draw_line_to_grid(line: &Line, grid: &mut Grid) {
+        if line.x1 == line.x2 {
+            line.horizontal(grid);
+        } else if line.y1 == line.y2 {
+            line.vertical(grid);
+        } else if line.x1 < line.x2 && line.y1 < line.y2 {
+            line.diagonal_down_right(grid);
+        } else if line.x2 < line.x1 && line.y1 < line.y2 {
+            line.diagonal_down_left(grid);
+        } else if line.x1 < line.x2 && line.y2 < line.y1 {
+            line.diagonal_up_right(grid);
+        } else if line.x2 < line.x1 && line.y2 < line.y1 {
+            line.diagonal_up_left(grid);
         }
     }
 }
@@ -204,20 +216,6 @@ mod test {
     3,4 -> 1,4
     0,0 -> 8,8
     5,5 -> 8,2";
-
-    const DIAGONALS: &str = "
-    8,0 -> 0,8
-    6,4 -> 2,0
-    0,0 -> 8,8
-    5,5 -> 8,2";
-
-    #[test]
-    fn diagonals_only() {
-        let input = Input::from_str(DIAGONALS);
-        let _ = 12;
-        let _ = input.problem2();
-        // assert_eq!(expected, actual);
-    }
 
     #[test]
     fn problem1() {
