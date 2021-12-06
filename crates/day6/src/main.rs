@@ -9,19 +9,17 @@ fn main() {
     println!("problem2: {}", input.problem2());
 }
 
-#[allow(unused)]
 mod input {
-    use std::collections::HashMap;
 
     #[derive(Debug, Clone)]
     pub struct Input {
-        ages: Vec<usize>,
+        phases: Vec<usize>,
     }
 
     impl Input {
         pub fn from_str(s: &str) -> Self {
             Self {
-                ages: s
+                phases: s
                     .trim()
                     .split(',')
                     .map(|n| n.trim().parse().unwrap())
@@ -29,38 +27,41 @@ mod input {
             }
         }
 
-        pub fn problem1(&self) -> usize {
-            self.population_after_n_days(80)
-        }
-
-        pub fn problem2(&self) -> usize {
-            self.population_after_n_days(256)
-        }
-
-        fn population_after_n_days(&self, iterations: i32) -> usize {
-            let mut tally = self.tally();
-            for _ in 0..iterations {
-                update_population(&mut tally, 2);
+    pub fn problem1(&self) -> usize {
+        let mut population = self.phases.clone();
+        for _ in 0..80 {
+            let births = population
+                .iter()
+                .filter_map(|a| (*a == 0).then(|| 8))
+                .collect::<Vec<_>>();
+            for phase in population.iter_mut() {
+                if *phase == 0 {
+                    *phase = 6
+                } else {
+                    *phase -= 1;
+                }
             }
-            tally.iter().copied().sum()
+            population.extend(births);
         }
-
-        fn tally(&self) -> [usize; 9] {
-            let mut tally = [0; 9];
-            for &age in &self.ages {
-                tally[age] += 1;
-            }
-            tally
-        }
+        population.len()
     }
 
-    fn update_population(tally: &mut [usize], new_spawn_time: usize) {
-        let zero = tally[0];
-        for i in 0..tally.len() - 1 {
-            tally[i] = tally[i + 1];
+    pub fn problem2(&self) -> usize {
+        let mut phase_count = [0; 9];
+        for &phase in &self.phases {
+            phase_count[phase] += 1;
         }
-        tally[tally.len() - 1 - new_spawn_time] += zero;
-        tally[tally.len() - 1] = zero;
+
+        for _ in 0..256 {
+            let zero = phase_count[0];
+            for i in 0..8 {
+                phase_count[i] = phase_count[i + 1];
+            }
+            phase_count[6] += zero;
+            phase_count[8] = zero;
+        }
+        phase_count.iter().sum()
+    }
     }
 }
 #[cfg(test)]
