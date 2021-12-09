@@ -31,8 +31,9 @@ jobs:
            touch crates/day4/src/input.txt &&
            touch crates/day5/src/input.txt &&
            touch crates/day6/src/input.txt &&
-           touch crates/day7/src/input.txt
+           touch crates/day7/src/input.txt &&
+           touch crates/day8/src/input.txt
     - name: Check
-      run: cargo check --workspace --exclude day8
+      run: cargo check --workspace --exclude day9 day10
     - name: Run tests
-      run: cargo test --workspace --exclude day8
+      run: cargo test --workspace --exclude day9 day10

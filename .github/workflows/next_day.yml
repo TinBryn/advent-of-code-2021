@@ -25,8 +25,8 @@ jobs:
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     - name: Touch input
-      run: touch crates/day8/src/input.txt
+      run: touch crates/day9/src/input.txt
     - name: Check
-      run: cargo check -p day8
+      run: cargo check -p day9
     - name: Run tests
-      run: cargo test -p day8
+      run: cargo test -p day9
