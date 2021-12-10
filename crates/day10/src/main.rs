@@ -34,15 +34,14 @@ mod input {
                     '[' => stack.push(']'),
                     '{' => stack.push('}'),
                     '<' => stack.push('>'),
-                    ')' | '}' | ']' | '>' => {
+                    _ => {
                         if Some(c) != stack.pop() {
                             return Err(c);
                         }
                     }
-                    _ => {}
                 }
             }
-            Ok(stack.into_iter().rev().map(|b| b as char).collect())
+            Ok(stack.into_iter().rev().collect())
         }
     }
 
