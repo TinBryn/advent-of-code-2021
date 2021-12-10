@@ -20,7 +20,9 @@ mod input {
 
     impl Line {
         pub fn from_str(s: &str) -> Self {
-            Self { data: s.trim().into() }
+            Self {
+                data: s.trim().into(),
+            }
         }
 
         pub fn completion(&self) -> Result<String, char> {
@@ -83,18 +85,16 @@ mod input {
     }
 
     fn autocomplete_score(s: String) -> usize {
-        let mut score = 0;
-        for c in s.chars() {
-            score *= 5;
-            score += match c {
-                ')' => 1,
-                ']' => 2,
-                '}' => 3,
-                '>' => 4,
-                _ => 0,
-            };
-        }
-        score
+        s.chars().fold(0, |score, c| {
+            score * 5
+                + match c {
+                    ')' => 1,
+                    ']' => 2,
+                    '}' => 3,
+                    '>' => 4,
+                    _ => 0,
+                }
+        })
     }
 
     fn error_score(c: char) -> usize {
