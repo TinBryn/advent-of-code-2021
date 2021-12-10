@@ -20,37 +20,27 @@ mod input {
 
     impl Line {
         pub fn from_str(s: &str) -> Self {
-            Self { data: s.into() }
+            Self { data: s.trim().into() }
         }
 
-        pub fn repaired(&self) -> Result<String, (usize, u8)> {
+        pub fn completion(&self) -> Result<String, char> {
             let mut stack = Vec::new();
 
-            for (i, &c) in self.data.as_bytes().iter().enumerate() {
+            for c in self.data.chars() {
                 match c {
-                    b'(' => stack.push(b')'),
-                    b'[' => stack.push(b']'),
-                    b'{' => stack.push(b'}'),
-                    b'<' => stack.push(b'>'),
-                    b')' | b'}' | b']' | b'>' => {
-                        if let Some(p) = stack.pop() {
-                            if p != c {
-                                return Err((i, c));
-                            }
+                    '(' => stack.push(')'),
+                    '[' => stack.push(']'),
+                    '{' => stack.push('}'),
+                    '<' => stack.push('>'),
+                    ')' | '}' | ']' | '>' => {
+                        if Some(c) != stack.pop() {
+                            return Err(c);
                         }
                     }
                     _ => {}
                 }
             }
-            let mut data = String::new();
-            data.extend(stack.into_iter().rev().map(|b| b as char));
-            Ok(data)
-        }
-    }
-
-    impl Display for Line {
-        fn fmt(&self, _f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            todo!()
+            Ok(stack.into_iter().rev().map(|b| b as char).collect())
         }
     }
 
@@ -74,50 +64,45 @@ mod input {
 
     impl Problem {
         pub fn part1(&self) -> usize {
-            self.lines
-                .iter()
-                .filter_map(|line| line.repaired().err())
-                .map(|(_, i)| i)
-                // .inspect(|&b| println!("{:?}", b as char))
-                .map(error_score)
-                .sum()
+            self.scores().filter_map(|comp| comp.err()).sum()
         }
 
         pub fn part2(&self) -> usize {
-            let mut scores: Vec<_> = self.lines
-                .iter()
-                .filter_map(|line| line.repaired().ok())
-                .map(|s| autocomplete_score(&s))
-                .collect();
-
+            let mut scores: Vec<_> = self.scores().filter_map(|comp| comp.ok()).collect();
             scores.sort_unstable();
+            scores[(scores.len() - 1) / 2]
+        }
 
-            scores[(scores.len()-1)/2]
+        fn scores(&'_ self) -> impl Iterator<Item = Result<usize, usize>> + '_ {
+            self.lines.iter().map(|line| {
+                line.completion()
+                    .map(autocomplete_score)
+                    .map_err(error_score)
+            })
         }
     }
 
-    fn autocomplete_score(s: &str) -> usize {
+    fn autocomplete_score(s: String) -> usize {
         let mut score = 0;
         for c in s.chars() {
             score *= 5;
-            score +=
-            match c {
+            score += match c {
                 ')' => 1,
                 ']' => 2,
                 '}' => 3,
                 '>' => 4,
-                _ => 0
+                _ => 0,
             };
         }
         score
     }
 
-    fn error_score(c: u8) -> usize {
+    fn error_score(c: char) -> usize {
         match c {
-            b')' => 3,
-            b']' => 57,
-            b'}' => 1197,
-            b'>' => 25137,
+            ')' => 3,
+            ']' => 57,
+            '}' => 1197,
+            '>' => 25137,
             _ => 0,
         }
     }
