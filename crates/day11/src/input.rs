@@ -1,23 +1,15 @@
 #[derive(Debug, Clone)]
-pub struct Line {
-    pub data: String,
-}
-
-impl Line {
-    pub fn from_str(s: &str) -> Self {
-        Self { data: s.into() }
-    }
-}
-
-#[derive(Debug, Clone)]
 pub struct Input {
-    pub lines: Vec<Line>,
+    pub data: Vec<u8>,
 }
 
 impl Input {
     pub fn from_str(s: &str) -> Self {
-        Self {
-            lines: s.trim().lines().map(Line::from_str).collect(),
-        }
+        let data: Vec<u8> = s
+            .chars()
+            .filter(|c| ('0'..='9').contains(c))
+            .map(|c| (c as u8 - b'0'))
+            .collect();
+        Self { data }
     }
 }
