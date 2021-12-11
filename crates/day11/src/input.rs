@@ -1,6 +1,7 @@
 #[derive(Debug, Clone)]
 pub struct Input {
     pub data: Vec<u8>,
+    pub width: usize,
 }
 
 impl Input {
@@ -10,6 +11,7 @@ impl Input {
             .filter(|c| ('0'..='9').contains(c))
             .map(|c| (c as u8 - b'0'))
             .collect();
-        Self { data }
+        let width = s.trim().lines().next().unwrap().trim().len();
+        Self { data, width }
     }
 }

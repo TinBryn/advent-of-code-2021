@@ -1,4 +1,4 @@
-use crate::{input::Input, problem::{Problem, neighbours}};
+use crate::{input::Input, problem::Problem};
 
 const EXAMPLE: &str = "
 5483143223
@@ -16,11 +16,6 @@ const EXAMPLE: &str = "
 #[test]
 fn problem1() {
     let input = Input::from_str(EXAMPLE);
-    for i in 0..10 {
-        let l = i * 10;
-        let u = l + 10;
-        println!("{:?}", &input.data[l..u])
-    }
     let problem = Problem::from_input(input);
     let actual = problem.part1();
     let expected = 1656;
@@ -36,9 +31,23 @@ fn problem2() {
     assert_eq!(expected, actual);
 }
 
+const SMALL: &str = "
+11111
+19991
+19191
+19991
+11111";
+
 #[test]
-fn adjacent() {
-    for v in neighbours(0) {
-        println!("x: {}, y: {}", v % 10, v / 10)
+#[ignore = "debugging, no actual check"]
+fn small_example() {
+    let input = Input::from_str(SMALL);
+    let mut problem = Problem::from_input(input);
+
+    println!("{}", problem);
+
+    for _ in 0..10 {
+        problem.update();
+        println!("{}", problem);
     }
 }
