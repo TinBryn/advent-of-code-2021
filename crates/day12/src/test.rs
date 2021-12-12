@@ -44,36 +44,32 @@ start-RW
 
 #[test]
 fn problem1_exp1() {
-    let input = Input::from_str(EXAMPLE1);
-    let problem = Problem::from_input(input);
-    let actual = problem.part1();
-    let expected = 10;
-    assert_eq!(expected, actual);
+    check1(EXAMPLE1, 10);
 }
 
 #[test]
 fn problem1_exp2() {
-    let input = Input::from_str(EXAMPLE2);
-    let problem = Problem::from_input(input);
-    let actual = problem.part1();
-    let expected = 19;
-    assert_eq!(expected, actual);
+    check1(EXAMPLE2, 19);
 }
 
 #[test]
 fn problem1_exp3() {
-    let input = Input::from_str(EXAMPLE3);
-    let problem = Problem::from_input(input);
-    let actual = problem.part1();
-    let expected = 226;
-    assert_eq!(expected, actual);
+    check1(EXAMPLE3, 226);
 }
 
 #[test]
 fn problem2() {
-    let input = Input::from_str(EXAMPLE1);
-    let problem = Problem::from_input(input);
+    check2(EXAMPLE1, 36);
+}
+
+fn check1(input: &str, expected: usize) {
+    let problem = Problem::from_input(Input::from_str(input));
+    let actual = problem.part1();
+    assert_eq!(expected, actual);
+}
+
+fn check2(input: &str, expected: usize) {
+    let problem = Problem::from_input(Input::from_str(input));
     let actual = problem.part2();
-    let expected = 36;
     assert_eq!(expected, actual);
 }
