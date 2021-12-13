@@ -43,14 +43,12 @@ impl Problem {
     }
 
     pub fn update(&mut self) -> usize {
-        let len = self.data.len();
         let mut flashing = VecDeque::new();
-        #[allow(clippy::needless_range_loop)]
-        for i in 0..len {
-            self.data[i] += 1;
-            if self.data[i] > 9 {
-                self.data[i] = 0;
-                flashing.push_back(i)
+        for (i, squid) in self.data.iter_mut().enumerate() {
+            *squid += 1;
+            if *squid > 9 {
+                *squid = 0;
+                flashing.push_back(i);
             }
         }
 
