@@ -66,8 +66,7 @@ impl Grid<u8> {
 
         for x in 0..self.width {
             for y in 0..height {
-                let d = height - y;
-                let y2 = height + d;
+                let y2 = 2 * height - y;
                 if self[(x, y)] == b'#' || (y2 < self.height() && self[(x, y2)] == b'#') {
                     result[(x, y)] = b'#';
                 }
@@ -85,8 +84,7 @@ impl Grid<u8> {
 
         for y in 0..self.height() {
             for x in 0..width {
-                let d = width - x;
-                let x2 = width + d;
+                let x2 = 2 * width - x;
                 if self[(x, y)] == b'#' || (x2 < self.width && self[(x2, y)] == b'#') {
                     result[(x, y)] = b'#';
                 }
