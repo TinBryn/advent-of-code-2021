@@ -1,0 +1,8 @@
+[package]
+name = "day15"
+license = "MIT or Apache"
+authors = ["Kieran Griffiths <20491633@student.uwa.edu.au>"]
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
