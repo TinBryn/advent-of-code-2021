@@ -7,6 +7,7 @@ fn main() {
     let problem = Problem::from_input(input);
 
     println!("problem1: {}", problem.part1());
+
     println!("problem2: {}", problem.part2());
 }
 
