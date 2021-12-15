@@ -5,24 +5,21 @@ use crate::input::{Input, Insertion};
 #[derive(Debug, Clone)]
 pub struct Problem {
     pub template: String,
-    pub lines: Vec<Insertion>,
     pub subs: HashMap<[u8; 2], u8>,
 }
 
 impl Problem {
     pub fn from_input(input: Input) -> Self {
-        let lines = input.lines;
         let mut subs = HashMap::new();
-        for &Insertion {
+        for Insertion {
             pattern: [a, c],
             insert: b,
-        } in &lines
+        } in input.lines
         {
             subs.insert([a, c], b);
         }
         Self {
             template: input.template,
-            lines,
             subs,
         }
     }
@@ -45,15 +42,12 @@ impl Problem {
             }
         }
 
-        for i in 0..iter {
-            println!("cycle {}", i + 1);
+        for _ in 0..iter {
             pairs = self.replace(pairs);
         }
 
         let &last = self.template.as_bytes().last().unwrap();
-        let tally = tallys(&pairs, last);
-
-        min_max_tally(tally)
+        min_max_tally(tallys(&pairs, last))
     }
 
     fn replace(&self, pairs: HashMap<[u8; 2], usize>) -> HashMap<[u8; 2], usize> {
@@ -61,8 +55,8 @@ impl Problem {
 
         for ([a, c], t) in pairs {
             if let Some(&b) = self.subs.get(&[a, c]) {
-                add_or_insert(&mut result, [a, b], t);
-                add_or_insert(&mut result, [b, c], t);
+                *result.entry([a, b]).or_default() += t;
+                *result.entry([b, c]).or_default() += t;
             }
         }
 
@@ -70,23 +64,11 @@ impl Problem {
     }
 }
 
-fn add_or_insert(result: &mut HashMap<[u8; 2], usize>, a: [u8; 2], c: usize) {
-    if let Some(t) = result.get_mut(&a) {
-        *t += c;
-    } else {
-        result.insert(a, c);
-    }
-}
-
 fn tallys(pairs: &HashMap<[u8; 2], usize>, last: u8) -> HashMap<u8, usize> {
     let mut result = HashMap::new();
     result.insert(last, 1);
     for ([f, _], &c) in pairs {
-        if let Some(t) = result.get_mut(f) {
-            *t += c;
-        } else {
-            result.insert(*f, c);
-        }
+        *result.entry(*f).or_default() += c;
     }
 
     result

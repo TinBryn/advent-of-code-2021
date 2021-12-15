@@ -24,7 +24,6 @@ CN -> C
 #[test]
 fn problem1() {
     let input = EXAMPLE.parse().unwrap();
-    println!("{}", input);
     let problem = Problem::from_input(input);
     let actual = problem.part1();
     let expected = 1588;
