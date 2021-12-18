@@ -47,7 +47,19 @@ impl Display for Grid<u8> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for y in 0..self.height() {
             for x in 0..self.width {
-                write!(f, "{}", self[(x, y)] as char)?;
+                write!(f, "{}", self[(x, y)])?;
+            }
+            writeln!(f)?;
+        }
+        Ok(())
+    }
+}
+
+impl Display for Grid<usize> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        for y in 0..self.height() {
+            for x in 0..self.width {
+                write!(f, "{:<4}", self[(x, y)])?;
             }
             writeln!(f)?;
         }
