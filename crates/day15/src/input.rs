@@ -16,13 +16,15 @@ impl std::error::Error for Error {}
 
 #[derive(Debug, Clone)]
 pub struct Line {
-    pub data: String,
+    pub data: Vec<u8>,
 }
 
 impl FromStr for Line {
     type Err = Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self { data: s.into() })
+        Ok(Self {
+            data: s.as_bytes().iter().copied().map(|b| b - b'0').collect(),
+        })
     }
 }
 
@@ -43,6 +45,4 @@ impl FromStr for Input {
     }
 }
 
-impl Input {
-    
-}
+impl Input {}
