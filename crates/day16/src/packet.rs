@@ -2,10 +2,10 @@ use std::fmt::Debug;
 
 use bitvec::prelude::*;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Packet {
-    pub header: Header,
-    pub data: PacketData,
+    pub version: usize,
+    pub data: Data,
 }
 
 pub fn get_literal(mut bits: &BitSlice) -> (usize, usize) {
@@ -14,7 +14,6 @@ pub fn get_literal(mut bits: &BitSlice) -> (usize, usize) {
     loop {
         lit <<= 4;
         lit += from_bits(&bits[1..5]);
-        // println!("{}", lit);
         if !bits[0] {
             break;
         }
@@ -68,49 +67,26 @@ fn get_packets_to_length(mut bits: &BitSlice, len: usize) -> Vec<Packet> {
 impl Packet {
     pub fn get_packet(bits: &BitSlice) -> (Self, usize) {
         let header = Header::from(&bits[0..6]);
+        let version = header.version;
+        let type_id = header.type_id;
         let bits = &bits[6..];
         let (data, size) = if header.type_id == 4 {
             let (lit, size) = get_literal(bits);
-            (PacketData::Literal(lit), size + 6)
+            (Data::Literal(lit), size + 6)
         } else {
             let (packets, size) = get_sub_packets(bits);
-            (PacketData::Operator(packets), size + 6)
+            (Data::Operator(type_id.into(), packets), size + 6)
         };
 
-        (Self { header, data }, size)
+        (Self { version, data }, size)
     }
 
     pub fn eval(&self) -> usize {
-        match &self.data {
-            PacketData::Literal(lit) => *lit,
-            PacketData::Operator(packets) => {
-                let results = packets.iter().map(Packet::eval);
-                match self.header.type_id {
-                    0 => results.sum(),
-                    1 => results.product(),
-                    2 => results.min().unwrap_or_default(),
-                    3 => results.max().unwrap_or_default(),
-                    5 | 6 | 7 => {
-                        let results: Vec<_> = results.collect();
-                        if results.len() >= 2 {
-                            match self.header.type_id {
-                                5 => (results[0] > results[1]) as usize,
-                                6 => (results[0] < results[1]) as usize,
-                                7 => (results[0] == results[1]) as usize,
-                                _ => unreachable!(),
-                            }
-                        } else {
-                            0
-                        }
-                    }
-                    _ => unreachable!(),
-                }
-            }
-        }
+        self.data.eval()
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Header {
     #[allow(dead_code)]
     pub version: usize,
@@ -127,10 +103,66 @@ impl From<&BitSlice> for Header {
     }
 }
 
-#[derive(Debug)]
-pub enum PacketData {
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Operator {
+    Sum,
+    Product,
+    Min,
+    Max,
+    Greater,
+    Less,
+    Equal,
+}
+
+impl From<usize> for Operator {
+    fn from(type_id: usize) -> Self {
+        match type_id {
+            0 => Self::Sum,
+            1 => Self::Product,
+            2 => Self::Min,
+            3 => Self::Max,
+            5 => Self::Greater,
+            6 => Self::Less,
+            7 => Self::Equal,
+            _ => unreachable!(),
+        }
+    }
+}
+
+impl Operator {
+    pub fn eval(&self, evals: impl Iterator<Item = usize>) -> usize {
+        match *self {
+            Operator::Sum => evals.sum(),
+            Operator::Product => evals.product(),
+            Operator::Min => evals.min().unwrap_or_default(),
+            Operator::Max => evals.max().unwrap_or_default(),
+            Operator::Greater => apply_op(evals, |f, s| f > s),
+            Operator::Less => apply_op(evals, |f, s| f < s),
+            Operator::Equal => apply_op(evals, |f, s| f == s),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub enum Data {
     Literal(usize),
-    Operator(Vec<Packet>),
+    Operator(Operator, Vec<Packet>),
+}
+
+impl Data {
+    pub fn eval(&self) -> usize {
+        match self {
+            Data::Literal(lit) => *lit,
+            Data::Operator(op, packets) => op.eval(packets.iter().map(Packet::eval)),
+        }
+    }
+}
+
+fn apply_op<Op: Fn(usize, usize) -> bool>(mut evals: impl Iterator<Item = usize>, op: Op) -> usize {
+    evals
+        .next()
+        .and_then(|f| evals.next().map(|s| op(f, s) as usize))
+        .unwrap_or_default()
 }
 
 pub fn from_bits(bits: &BitSlice) -> usize {

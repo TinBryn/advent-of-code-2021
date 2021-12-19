@@ -53,13 +53,13 @@ impl Problem {
 
 fn sum_version_numbers(packet: &Packet) -> usize {
     let sub = match &packet.data {
-        crate::packet::PacketData::Literal(_) => 0usize,
-        crate::packet::PacketData::Operator(packets) => {
+        crate::packet::Data::Literal(_) => 0usize,
+        crate::packet::Data::Operator(_, packets) => {
             packets.iter().map(sum_version_numbers).sum()
         }
     };
 
-    sub + packet.header.version
+    sub + packet.version
 }
 
 fn hex_to_u8(c: u8) -> u8 {
