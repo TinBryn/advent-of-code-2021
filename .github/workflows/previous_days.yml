@@ -24,22 +24,6 @@ jobs:
           ~/.cargo/git/db/
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-    - name: Touch input
-      run: touch crates/day1/src/input.txt &&
-           touch crates/day2/src/input.txt &&
-           touch crates/day3/src/input.txt &&
-           touch crates/day4/src/input.txt &&
-           touch crates/day5/src/input.txt &&
-           touch crates/day6/src/input.txt &&
-           touch crates/day7/src/input.txt &&
-           touch crates/day8/src/input.txt &&
-           touch crates/day9/src/input.txt &&
-           touch crates/day10/src/input.txt &&
-           touch crates/day11/src/input.txt &&
-           touch crates/day12/src/input.txt &&
-           touch crates/day13/src/input.txt &&
-           touch crates/day14/src/input.txt &&
-           touch crates/day15/src/input.txt
     - name: Check
       run: cargo check --workspace --exclude day16 --exclude day17
     - name: Run tests
