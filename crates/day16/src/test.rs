@@ -64,6 +64,6 @@ fn problem2() {
     let input = EXAMPLE.parse().unwrap();
     let problem = Problem::from_input(input);
     let actual = problem.part2();
-    let expected = 0;
+    let expected = 15;
     assert_eq!(expected, actual);
 }
