@@ -22,24 +22,19 @@ pub struct Line {
 impl FromStr for Line {
     type Err = Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self { data: s.into() })
+        Ok(Self { data: s.trim().into() })
     }
 }
 
 #[derive(Debug, Clone)]
 pub struct Input {
-    pub lines: Vec<Line>,
+    pub line: Line,
 }
 
 impl FromStr for Input {
     type Err = Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let lines = s
-            .trim()
-            .lines()
-            .map(|s| s.trim().parse())
-            .collect::<Result<_, _>>()?;
-        Ok(Self { lines })
+        s.parse().map(|line| Self {line})
     }
 }
 

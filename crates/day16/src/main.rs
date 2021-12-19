@@ -14,5 +14,7 @@ mod input;
 
 mod problem;
 
+mod packet;
+
 #[cfg(test)]
 mod test;
