@@ -1,9 +1,12 @@
-use crate::problem::Problem;
+use crate::{input::Input, problem::Problem};
 
-const INPUT: &str = include_str!("input.txt");
+const _INPUT: &str = "target area: x=175..227, y=-134..-79";
 
 fn main() {
-    let input = INPUT.parse().unwrap();
+    let input = Input {
+        x_range: 175..=227,
+        y_range: -134..=-79,
+    };
     let problem = Problem::from_input(input);
 
     println!("problem1: {}", problem.part1());

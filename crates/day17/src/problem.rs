@@ -1,13 +1,13 @@
-use crate::input::{Input, Line};
+use crate::input::Input;
 
 #[derive(Debug, Clone)]
 pub struct Problem {
-    lines: Vec<Line>,
+    input: Input,
 }
 
 impl Problem {
     pub fn from_input(input: Input) -> Self {
-        Self { lines: input.lines }
+        Self { input }
     }
 
     pub fn part1(&self) -> usize {
@@ -19,7 +19,19 @@ impl Problem {
     }
 
     pub fn common(&self) -> usize {
-        println!("{}", self.lines.len());
-        todo!()
+        let minx = self.fun_name();
+        let maxy = (-self.input.y_range.start()) as usize - 1;
+
+        println!("minx: {}, maxy: {}", minx, maxy);
+        maxy * (maxy + 1) / 2
+        
+    }
+
+    fn fun_name(&self) -> isize {
+        let mut minx = 0;
+        while minx * (minx + 1) / 2 < *self.input.x_range.start() {
+            minx += 1;
+        }
+        minx
     }
 }
