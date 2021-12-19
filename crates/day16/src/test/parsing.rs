@@ -17,7 +17,7 @@ fn parse_input_to_string() {
 fn literal_packet() {
     let input = "D2FE28".parse().unwrap();
     let problem = Problem::from_input(input);
-    let (packet, _) = Packet::get_packet(problem.data.as_bitslice());
+    let (packet, _) = Packet::get_packet(problem.data.as_bitslice()).unwrap();
 
     let expected = Packet {
         version: 6,
@@ -32,7 +32,7 @@ fn operator_packet_len_type0() {
     let input = "38006F45291200".parse().unwrap();
     let problem = Problem::from_input(input);
     let bits = &problem.data[..];
-    let (packet, _) = Packet::get_packet(bits);
+    let (packet, _) = Packet::get_packet(bits).unwrap();
 
     let expected = Packet {
         version: 1,
@@ -59,7 +59,7 @@ fn operator_packet_len_type1() {
     let input = "EE00D40C823060".parse().unwrap();
     let problem = Problem::from_input(input);
     let bits = &problem.data[..];
-    let (packet, _) = Packet::get_packet(bits);
+    let (packet, _) = Packet::get_packet(bits).unwrap();
 
     let expected = Packet {
         version: 7,

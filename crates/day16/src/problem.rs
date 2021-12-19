@@ -47,7 +47,7 @@ impl Problem {
 
     pub fn common(&self) -> Packet {
         let bits = self.data.as_bitslice();
-        Packet::get_packet(bits).0
+        Packet::get_packet(bits).unwrap().0
     }
 }
 
