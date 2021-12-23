@@ -1,13 +1,16 @@
-use crate::input::{Input, Line};
+use crate::input::{Input, Snailfish};
+
 
 #[derive(Debug, Clone)]
 pub struct Problem {
-    lines: Vec<Line>,
+    numbers: Vec<Snailfish>,
 }
 
 impl Problem {
     pub fn from_input(input: Input) -> Self {
-        Self { lines: input.lines }
+        Self {
+            numbers: input.numbers,
+        }
     }
 
     pub fn part1(&self) -> usize {
@@ -19,7 +22,11 @@ impl Problem {
     }
 
     pub fn common(&self) -> usize {
-        println!("{}", self.lines.len());
-        todo!()
+        self.numbers
+            .iter()
+            .cloned()
+            .reduce(|a, ref b| a.add(b))
+            .map(|n| n.magnitude())
+            .unwrap_or_default()
     }
 }
