@@ -23,3 +23,10 @@ fn problem2() {
     let expected = 112;
     assert_eq!(expected, actual);
 }
+
+#[test]
+fn missed_point() {
+    let input = INPUT;
+    let problem = Problem::from_input(input);
+    problem.hits(23, -10);
+}
